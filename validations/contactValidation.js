@@ -1,27 +1,37 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-const contactSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required().messages({
-        'string.base': 'Name must be a string',
-        'string.empty': 'Name is required',
-        'string.min': 'Name must be at least 3 characters long',
-        'string.max': 'Name cannot be longer than 30 characters',
-        'any.required': 'Name is required'
-    }),
-    phone: Joi.string().pattern(/^[0-9]+$/).min(10).max(15).required().messages({
-        'string.base': 'Phone must be a string',
-        'string.empty': 'Phone is required',
-        'string.pattern.base': 'Phone must contain only digits',
-        'string.min': 'Phone must be at least 10 digits long',
-        'string.max': 'Phone cannot be longer than 15 digits',
-        'any.required': 'Phone is required'
-    }),
-    email: Joi.string().email().required().messages({
-        'string.base': 'Email must be a string',
-        'string.empty': 'Email is required',
-        'string.email': 'Email must be a valid email address',
-        'any.required': 'Email is required'
-    })
+const contactValidation = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
 });
 
-export default contactSchema;
+const favoriteValidation = Joi.object({
+  favorite: Joi.bool().required(),
+});
+
+const signupValidation = Joi.object({
+  email: Joi.string()
+    .required()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .messages({
+      "any.required": "Missing required email field",
+      "string.email": "Invalid email format",
+    }),
+  password: Joi.string().required().min(6).max(16).messages({
+    "any.required": "Missing required password field",
+    "string.min": "Password must be at least {#limit} characters long",
+    "string.max": "Password cannot be longer than {#limit} characters",
+  }),
+});
+
+const subscriptionValidation = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business"),
+});
+
+export {
+  contactValidation,
+  favoriteValidation,
+  signupValidation,
+  subscriptionValidation,
+};
