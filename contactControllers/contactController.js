@@ -25,7 +25,6 @@ const getContactById = async (req, res, next) => {
 };
 
 const addContact = async (req, res, next) => {
-  // const { name, email, phone } = req.body;/req.body
   const { error } = contactValidation.validate(req.body);
 
   if (error) {
