@@ -5,8 +5,10 @@ import {
   logoutUser,
   getCurrentUser,
   updateUserSubscription,
+  updateAvatar,
 } from "../../contactControllers/userController.js";
 import { authenticateToken } from "../../authentication/token.js";
+import { upload } from "../../authentication/upload.js";
 
 const router = express.Router();
 
@@ -19,5 +21,7 @@ router.get("/logout", logoutUser);
 router.get("/current", getCurrentUser);
 
 router.patch("/", authenticateToken, updateUserSubscription);
+
+router.patch("/avatars", authenticateToken,upload.single("avatar"),updateAvatar);
 
 export { router };
